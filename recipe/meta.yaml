@@ -10,29 +10,35 @@ source:
   sha256: 3bef3413a4c1c601b585e8d297256d0c1470ea012afa6e8461dc28bfb7c23f52
 
 build:
-  number: 1
-  noarch: python
-  script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv '
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: True  # [py<38]
 
 requirements:
   host:
-    - python {{ python_min }}
+    - python
     - pip
-    - setuptools
-    - pyyaml
-    - versioneer
+    - wheel
+    - setuptools >=62.6
+    - versioneer ==0.28
   run:
-    - python >={{ python_min }}
+    - python
     - pyyaml
 
 test:
+  source_files:
+    - donfig
   imports:
     - donfig
     - donfig.tests
+  commands:
+    - pip check
+    - pytest -v donfig/tests
   requires:
+    - pip
     - pytest
     - cloudpickle
-    - python {{ python_min }}
+    - python
 
 about:
   home: https://github.com/pytroll/donfig
