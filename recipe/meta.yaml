@@ -25,6 +25,10 @@ requirements:
     - python
     - pyyaml
 
+{% set deselect_tests = "" %}
+# linux can`t collect permission with collect_yaml method.
+{% set deselect_tests = " --deselect=donfig/tests/test_config.py::test_collect_yaml_permission_errors" %}  # [linux]
+
 test:
   source_files:
     - donfig
@@ -33,7 +37,7 @@ test:
     - donfig.tests
   commands:
     - pip check
-    - pytest -v donfig/tests
+    - pytest -v {{ deselect_tests }} donfig/tests
   requires:
     - pip
     - pytest
