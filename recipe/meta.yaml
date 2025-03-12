@@ -20,7 +20,8 @@ requirements:
     - pip
     - wheel
     - setuptools >=62.6
-    - versioneer ==0.28
+    # versioneer ==0.28 is not available for py313
+    - versioneer ==0.29
   run:
     - python
     - pyyaml
