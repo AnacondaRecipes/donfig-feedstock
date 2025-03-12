@@ -47,11 +47,16 @@ test:
 
 about:
   home: https://github.com/pytroll/donfig
+  summary: Python package for configuring a python package
   license: MIT
   license_family: MIT
   license_file: LICENSE.txt
-  summary: Python package for configuring a python package
-  doc_url: https://donfig.readthedocs.io/en/latest/
+  description: |
+    Donfig is a python library making package and script configuration easy. It is based on 
+    work originally done in the dask library for configuring itself and its subpackages. 
+    Donfig is a python library meant to make configuration easier for other python packages. 
+    Donfig can be configured programmatically, by environment variables, or from YAML files in standard locations.
+  doc_url: https://donfig.readthedocs.io
   dev_url: https://github.com/pytroll/donfig
 
 extra:
