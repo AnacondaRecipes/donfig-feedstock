@@ -10,37 +10,53 @@ source:
   sha256: 3bef3413a4c1c601b585e8d297256d0c1470ea012afa6e8461dc28bfb7c23f52
 
 build:
-  number: 1
-  noarch: python
-  script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv '
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: True  # [py<38]
 
 requirements:
   host:
-    - python {{ python_min }}
+    - python
     - pip
-    - setuptools
-    - pyyaml
-    - versioneer
+    - wheel
+    - setuptools >=62.6
+    # versioneer ==0.28 is not available for py313
+    - versioneer ==0.29
   run:
-    - python >={{ python_min }}
+    - python
     - pyyaml
 
+{% set deselect_tests = "" %}
+# linux can`t collect permission with collect_yaml method.
+{% set deselect_tests = " --deselect=donfig/tests/test_config.py::test_collect_yaml_permission_errors" %}  # [linux]
+
 test:
+  source_files:
+    - donfig
   imports:
     - donfig
     - donfig.tests
+  commands:
+    - pip check
+    - pytest -v {{ deselect_tests }} donfig/tests
   requires:
+    - pip
     - pytest
     - cloudpickle
-    - python {{ python_min }}
+    - python
 
 about:
   home: https://github.com/pytroll/donfig
+  summary: Python package for configuring a python package
   license: MIT
   license_family: MIT
   license_file: LICENSE.txt
-  summary: Python package for configuring a python package
-  doc_url: https://donfig.readthedocs.io/en/latest/
+  description: |
+    Donfig is a python library making package and script configuration easy. It is based on 
+    work originally done in the dask library for configuring itself and its subpackages. 
+    Donfig is a python library meant to make configuration easier for other python packages. 
+    Donfig can be configured programmatically, by environment variables, or from YAML files in standard locations.
+  doc_url: https://donfig.readthedocs.io
   dev_url: https://github.com/pytroll/donfig
 
 extra:
